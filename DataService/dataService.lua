@@ -1,7 +1,7 @@
 local dataService = {}
 
 --Services & Data Tree
-local dataTree = require(script.dataTree)
+local dataTree = require(script.Parent.dataTree)
 local DSS = game:GetService("DataStoreService")
 
 --initialize Player (Load Data)
