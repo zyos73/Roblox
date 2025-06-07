@@ -17,67 +17,116 @@ local dataService = {}
 local dataTree = require(script.dataTree)
 local DSS = game:GetService("DataStoreService")
 
---initialize Player (Load Data)
-function dataService:_initPlayer(plr)
-	local data
-	
-	if dataTree.DataStoreName then
-		local success, result = pcall(function()
-			return DSS:GetDataStore(dataTree.DataStoreName):GetAsync(plr.UserId)
-		end)
+--Initialize Player
+function dataService:initPlayer(plr)
+	local data = dataService:_loadPlayerData(plr)
 
-		data = success and result or {}
-	end
 	for i, folder in dataTree.Folders do
-		local newFolder = Instance.new("Folder")
-		newFolder.Name = folder.Name
-		newFolder.Parent = plr
-
-		for j, v in folder.Values do
-			local NewValue = Instance.new(v.Instance)
-			NewValue.Name = v.Name
-			if data and v.Save then
-				if data[v.Name] then
-					NewValue.Value = data[v.Name]
-				else
-					NewValue.Value = v.StartValue
-				end
-			else
-				NewValue.Value = v.StartValue
-			end
-			NewValue.Parent = newFolder
-		end
+		dataService:_createFolder(plr, folder, data)
 	end
 end
 
+--Load Player Data
+function dataService:_loadPlayerData(plr)
+	if not dataTree.DataStoreName then return end
+	
+	local success, result = pcall(function()
+		return DSS:GetDataStore(dataTree.DataStoreName):GetAsync(plr.UserId)
+	end)
+	
+	return success and result or {}
+end
+
+--Create Player Data Folders
+function dataService:_createFolder(plr, folderDef, data)
+	local newFolder = Instance.new("Folder")
+	newFolder.Name = folderDef.Name
+	newFolder.Parent = plr
+	
+	for i, value in folderDef.Values do
+		dataService:_createValue(value, newFolder, data)
+	end
+end
+
+
+--Create Player Data Values
+function dataService:_createValue(valueDef, newFolder, data)
+	local value = Instance.new(valueDef.Instance)
+	value.Name = valueDef.Name
+	
+	if data and valueDef.Save and data[valueDef.Name] then
+		value.Value = data[valueDef.Name]
+	else
+		value.Value = valueDef.StartValue
+	end
+	
+	value.Parent = newFolder
+end
+
+
+
 --Save Data
 function dataService.dataSave(plr)
-	if dataTree.DataStoreName then
-		local ds = DSS:GetDataStore(dataTree.DataStoreName)
-		
-		local savedata = {}
-		
-		for i, child in plr:GetChildren() do
-			for j, folder in dataTree.Folders do
-				if folder.Name ==  child.Name then
-					for i, v in folder.Values do
-						if v.Save then
-							savedata[v.Name] = child[v.Name].Value
-						end
-					end
-				end
-			end
-		end
+	if not dataTree.DataStoreName then return end
 
-		local success, err = pcall(function()
-			ds:SetAsync(plr.UserId, savedata)
-		end)
+	local ds = DSS:GetDataStore(dataTree.DataStoreName)
+	local saveData = dataService:_collectSaveData(plr)
 
-		if not success then
-			warn("Save failed for", plr.Name, err)
+	local success, err = pcall(function()
+		ds:SetAsync(plr.UserId, saveData)
+	end)
+
+	if not success then
+		warn("Save failed for", plr.Name, err)
+	end
+
+	task.wait()
+end
+
+--Collect Data to Save
+function dataService:_collectSaveData(plr)
+	local saveData = {}
+
+	for _, child in plr:GetChildren() do
+		local folderDef = dataService:_getFolderDefinitionByName(child.Name)
+		if not folderDef then continue end
+
+		local valuesToSave = dataService:_getValuesToSave(child, folderDef)
+
+		for key, value in valuesToSave do
+			saveData[key] = value
 		end
 	end
-	task.wait()
+
+	return saveData
+end
+
+--Check if the folder is in the dataTree
+function dataService:_getFolderDefinitionByName(name)
+	for _, folder in dataTree.Folders do
+		if folder.Name == name then
+			return folder
+		end
+	end
+	return nil
+end
+
+--Get values which needs to be saved
+function dataService:_getValuesToSave(child, folderDef)
+	local result = {}
+
+	for _, valueDef in folderDef.Values do
+		if not dataService:_shouldSaveValue(child, valueDef) then return end
+		
+		result[valueDef.Name] = child[valueDef.Name].Value
+	end
+
+	return result
+end
+
+--Check if value needs to be saved
+function dataService:_shouldSaveValue(child, valueDef)
+	return valueDef.Save and child:FindFirstChild(valueDef.Name)
 end
 
 return dataService
