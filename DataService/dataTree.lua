@@ -1,3 +1,17 @@
+--[[
+Author: Zyos
+Date: 06/07/2025 DD/MM/YY
+Description: Module that contains the dataTree for dataService (script.Parent)
+Info: Put this inside of dataService.lua
+]]
+
+--Services
+--Events
+--Modules
+--Variables
+--Settings
+
+--Main
 local dataTree = {
 	["DataStoreName"] = "Test",
 	["Folders"] = {

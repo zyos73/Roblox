@@ -1,11 +1,24 @@
+--[[
+Author: Zyos
+Date: 06/07/2025 DD/MM/YY
+Description: Module that manages data for players
+]]
+
+--Services
+--Events
+--Modules
+--Variables
+--Settings
+
+--Main
 local dataService = {}
 
 --Services & Data Tree
-local dataTree = require(script.Parent.dataTree)
+local dataTree = require(script.dataTree)
 local DSS = game:GetService("DataStoreService")
 
 --initialize Player (Load Data)
-function dataService:initPlayer(plr)
+function dataService:_initPlayer(plr)
 	local data
 	
 	if dataTree.DataStoreName then
