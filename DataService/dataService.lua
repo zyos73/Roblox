@@ -4,18 +4,12 @@ Date: 06/07/2025 DD/MM/YY
 Description: Module that manages data for players
 ]]
 
---Services
---Events
---Modules
---Variables
---Settings
-
---Main
-local dataService = {}
-
 --Services & Data Tree
 local dataTree = require(script.dataTree)
 local DSS = game:GetService("DataStoreService")
+
+--Module
+local dataService = {}
 
 --Initialize Player
 function dataService:initPlayer(plr)

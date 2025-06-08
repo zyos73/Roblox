@@ -5,13 +5,7 @@ Description: Module that contains the dataTree for dataService (script.Parent)
 Info: Put this inside of dataService.lua
 ]]
 
---Services
---Events
---Modules
---Variables
---Settings
-
---Main
+--Module
 local dataTree = {
 	["DataStoreName"] = "Test",
 	["Folders"] = {
