@@ -38,7 +38,12 @@ dataTree.Folders[i].Values[i].StartValue -- is the value with which it starts
 dataTree.Folders[i].Values[i].Save  --decides if the value saves  
 dataTree.Folders[i].Values[i].Name --is the name of the value
 
-dataTree.DynamicFolders -- this is intended to be used by other APIs / Developers who want to control values which need to be saved in runtime (view example)  
+dataTree.DynamicFolders
+--[[
+this is intended to be used by other APIs / Developers  
+who want to control values which need to be saved  
+in runtime (view example)  
+]]
 ```
 
 ## Logic
