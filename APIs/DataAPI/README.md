@@ -1,5 +1,5 @@
 # Hierarchie
 ![Preview](image.png)
 
-# SOftware:
+# Software:
 [Click Here](./scripts)
