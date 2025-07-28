@@ -44,27 +44,10 @@ dataTree.DynamicFolders -- this is intended to be used by other APIs / Developer
 ## Logic
 Inside of [DataAPI.lua](./scripts/DataAPI.lua)
 
-## Example
+## Examples  
+### Saving:
 ```lua
 local DataAPI = require(script.Parent.DataAPI)
-
-local newFolder = {
-	{
-		Name = "test",
-		Values = {
-			{ Instance = "IntValue", StartValue = 0, Save = true, Name = "test" },
-		}
-	},
-	{
-		Name = "test2",
-		Values = {
-			{ Instance = "IntValue", StartValue = 0, Save = true, Name = "test2" },
-		}
-	},
-
-}
-
-DataAPI.register(newFolder)
 
 game.Players.PlayerAdded:Connect(function(player)
 	DataAPI.load(player)
@@ -75,6 +58,59 @@ game.Players.PlayerRemoving:Connect(function(player)
 end)
 
 DataAPI.autoSave(60)
+```
+
+### Creating your own dynamic folders:
+```lua
+local DataAPI = require(script.Parent.DataAPI)
+
+local newFolders = {
+	{
+		Name = "test",
+		Values = {
+			{ 
+                Instance = "IntValue",
+                StartValue = 0,
+                Save = true,
+                Name = "test" 
+            }
+		}
+	},
+	{
+		Name = "test2",
+		Values = {
+			{ 
+                Instance = "IntValue",
+                StartValue = 0,
+                Save = true,
+                Name = "test2" 
+            }
+		}
+	}
+
+}
+DataAPI.register(newFolders)
+
+local newFolder = {
+	{
+		Name = "test",
+		Values = {
+			{ 
+                Instance = "IntValue",
+                StartValue = 0,
+                Save = true,
+                Name = "test" 
+            }
+            { 
+                Instance = "IntValue",
+                StartValue = 0,
+                Save = true,
+                Name = "test2" 
+            }
+		}
+	}
+}
+DataAPI.register(newFolder)
 ```
 
 # Software:
