@@ -1,2 +1,2 @@
-# Hyrachie
+# Hierarchie
 ![Preview](image.png)
