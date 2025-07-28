@@ -63,10 +63,15 @@ end
 
 function API.getFolderDefinitionByName(name)
 	for _, folder in dataTree.Folders do
-		if folder.Name == name then
-			return folder
+		if folder.Name == name then return folder end
+	end
+
+	for _, namespaceFolders in pairs(dataTree.DynamicFolders) do
+		for _, folder in namespaceFolders do
+			if folder.Name == name then return folder end
 		end
 	end
+
 	return nil
 end
 

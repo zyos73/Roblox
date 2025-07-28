@@ -5,20 +5,24 @@
 ## Data Tree
 ```lua
 local API = {
-	["DataStoreName"] = "dataAPI",
-	["Folders"] = {
-		[1] = {
-			["Name"] = "leaderstats",
-			["Values"] = {
-				[1] = {
-					["Instance"] = "NumberValue",
-					["StartValue"] = 0,
-					["Save"] = true,
-					["Name"] = "temp"
-				},
+	DataStoreName = "dataAPI",
+
+
+	Folders = {
+		{
+			Name = "leaderstats",
+			Values = {
+				{ 
+					Instance = "NumberValue", 
+					StartValue = 0, Save = true, 
+					Name = "temp" 
+				}
 			}
 		}
-	}
+	},
+
+
+	DynamicFolders = {}
 }
 ```
 
@@ -32,7 +36,9 @@ dataTree.Folders[i].Values[i] --is the location to create your values
 dataTree.Folders[i].Values[i].Instance --is the value type  
 dataTree.Folders[i].Values[i].StartValue -- is the value with which it starts  
 dataTree.Folders[i].Values[i].Save  --decides if the value saves  
-dataTree.Folders[i].Values[i].Name --is the name of the value  
+dataTree.Folders[i].Values[i].Name --is the name of the value
+
+dataTree.DynamicFolders -- this is intended to be used by other APIs / Developers who want to control values which need to be saved in runtime (view example)  
 ```
 
 ## Logic
@@ -41,6 +47,24 @@ Inside of [DataAPI.lua](./scripts/DataAPI.lua)
 ## Example
 ```lua
 local DataAPI = require(script.Parent.DataAPI)
+
+local newFolder = {
+	{
+		Name = "test",
+		Values = {
+			{ Instance = "IntValue", StartValue = 0, Save = true, Name = "test" },
+		}
+	},
+	{
+		Name = "test2",
+		Values = {
+			{ Instance = "IntValue", StartValue = 0, Save = true, Name = "test2" },
+		}
+	},
+
+}
+
+DataAPI.register(newFolder)
 
 game.Players.PlayerAdded:Connect(function(player)
 	DataAPI.load(player)

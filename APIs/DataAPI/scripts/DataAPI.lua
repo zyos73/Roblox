@@ -1,6 +1,6 @@
 --[[
 Credits : zyos73
-Version : DataAPI 1.0
+Version : DataAPI 1.1
 
 ===IMPORTANT
 ===IMPORTANT
@@ -24,11 +24,10 @@ ServerScriptService
 local DataStoreService = game:GetService("DataStoreService")
 local Players = game:GetService("Players")
 
--- === Modules ===
-local dataTree = require(script.dataTree)
-local logic = require(script.logic)
-
-local API = {}
+local API = {
+	dataTree = require(script.dataTree),
+	logic = require(script.logic)
+}
 
 --[=[
 <strong>This is supposed to be run wehn the game starts.</strong>
@@ -42,10 +41,16 @@ end)
 ```
 ]=]
 function API.load(player : Player)
-	local data = logic.retrievePlayerData(player)
+	local data = API.logic.retrievePlayerData(player)
 
-	for _, folder in dataTree.Folders do
-		logic.createFolder(player, folder, data)
+	for _, folder in API.dataTree.Folders do
+		API.logic.createFolder(player, folder, data)
+	end
+
+	for _, namespaceFolders in API.dataTree.DynamicFolders do
+		for _, folder in namespaceFolders do
+			API.logic.createFolder(player, folder, data)
+		end
 	end
 end
 
@@ -61,10 +66,10 @@ end)
 ```
 ]=]
 function API.save(player)
-	if not dataTree.DataStoreName then return end
+	if not API.dataTree.DataStoreName then return end
 
-	local ds = DataStoreService:GetDataStore(dataTree.DataStoreName)
-	local saveData = logic.collectSaveData(player)
+	local ds = DataStoreService:GetDataStore(API.dataTree.DataStoreName)
+	local saveData = API.logic.collectSaveData(player)
 
 	local success, err = pcall(function()
 		ds:SetAsync(player.UserId, saveData)
@@ -92,6 +97,16 @@ function API.autoSave(time : number)
 			end
 		end
 	end)
+end
+
+function API.register(folders)
+	for i, folderDef in folders do
+		if not API.dataTree.DynamicFolders[folderDef.Name] then
+			API.dataTree.DynamicFolders[folderDef.Name] = {}
+		end
+
+		table.insert(API.dataTree.DynamicFolders[folderDef.Name], folderDef)
+	end
 end
 
 return API
