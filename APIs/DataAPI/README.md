@@ -17,6 +17,9 @@ dataTree.Folders[i].Values[i].Name | is the name of the value
 ## Logic
 Inside of [DataAPI.lua](./scripts/DataAPI.lua)
 
+## Example
+![Preview](./example.png)
+
 # Software:
 [Scripts](./scripts)  
 [Roblox Model](https://create.roblox.com/store/asset/115458272351878/DataAPI)
