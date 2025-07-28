@@ -40,7 +40,7 @@ game.Players.PlayerAdded:Connect(function(player)
 end)
 ```
 ]=]
-function API.load(player : Player)
+function API.load(player)
 	local data = API.logic.retrievePlayerData(player)
 
 	for _, folder in API.dataTree.Folders do
