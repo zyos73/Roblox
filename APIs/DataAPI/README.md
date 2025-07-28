@@ -39,7 +39,7 @@ dataTree.Folders[i].Values[i].Save  --decides if the value saves
 dataTree.Folders[i].Values[i].Name --is the name of the value
 
 dataTree.DynamicFolders
---[[
+--[[ 
 this is intended to be used by other APIs / Developers  
 who want to control values which need to be saved  
 in runtime (view example)  
@@ -105,7 +105,7 @@ local newFolder = {
                 StartValue = 0,
                 Save = true,
                 Name = "test" 
-            }
+            },
             { 
                 Instance = "IntValue",
                 StartValue = 0,
