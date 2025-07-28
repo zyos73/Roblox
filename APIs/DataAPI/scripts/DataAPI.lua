@@ -6,10 +6,14 @@ Version : DataAPI 1.0
 ===IMPORTANT
 ===IMPORTANT
 
-Childs:
+* Childs:
 
 logic.lua
 dataTree.lua
+
+* Parent:
+
+ServerScriptService
 
 ===IMPORTANT
 ===IMPORTANT
