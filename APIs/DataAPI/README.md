@@ -104,7 +104,7 @@ local newFolder = {
                 Instance = "IntValue",
                 StartValue = 0,
                 Save = true,
-                Name = "test" 
+                Name = "test" a
             },
             { 
                 Instance = "IntValue",
